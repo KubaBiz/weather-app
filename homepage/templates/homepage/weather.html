@@ -1,0 +1,58 @@
+<!-- weather.html -->
+<!-- 
+0: <i class="fa-solid fa-sun"></i>     
+1: <i class="fa-solid fa-cloud-sun"></i>
+2: <i class="fa-solid fa-cloud"></i>
+3: <i class="fa-solid fa-smog"></i>
+4: <i class="fa-solid fa-cloud-rain"></i>
+5: <i class="fa-solid fa-icicles"></i>
+6: <i class="fa-solid fa-cloud-showers-heavy"></i>
+7: <i class="fa-solid fa-cloud-showers-water"></i>
+8: <i class="fa-solid fa-snowflake"></i>
+9: <i class="fa-solid fa-cloud-meatball"></i>
+10: <i class="fa-solid fa-bolt-lightning"></i>
+11: '<i class="fa-solid fa-cloud-bolt"></i>',
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Success</title>
+    <script src="https://kit.fontawesome.com/a97dcc86ca.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>Weather Forecast for the Next 7 Days</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Data Type</th>
+                <th>Day 1</th>
+                <th>Day 2</th>
+                <th>Day 3</th>
+                <th>Day 4</th>
+                <th>Day 5</th>
+                <th>Day 6</th>
+                <th>Day 7</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, values in weather_data.items %}
+            <tr>
+                <td style="text-align: center;">{{ key }}</td>
+                {% for value in values %}
+                {% if key == 'Weather Icon' %}
+                    {% for key2, icon in weather_icons.items %}
+                    {% if value == key2 %}
+                        <td style="text-align: center;">{{ icon | safe}}</td>
+                    {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <td style="text-align: center;">{{ value }}</td>
+                {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<br>
+</body>
+</html>

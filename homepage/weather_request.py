@@ -2,9 +2,14 @@ import numpy as np
 import openmeteo_requests
 from openmeteo_sdk.Variable import Variable
 import pandas as pd
+import requests_cache
+from retry_requests import retry
+
 
 power_installation = 2.5
 panel_efficiency = 0.2
+cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
+retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
 om = openmeteo_requests.Client()
 
 def request_data(latitude, longitude):
@@ -14,8 +19,11 @@ def request_data(latitude, longitude):
     "daily": ["weather_code", "temperature_2m_max", "temperature_2m_min", "sunshine_duration"]
     }
 
-    responses = om.weather_api("https://api.open-meteo.com/v1/forecast", params=params)
-    response = responses[0]
+    try:
+        responses = om.weather_api("https://api.open-meteo.com/v1/forecast", params=params)
+        response = responses[0]
+    except Exception as e:
+        return e
 
     daily = response.Daily()
     daily_weather_code = daily.Variables(0).ValuesAsNumpy()
@@ -37,10 +45,10 @@ def request_data(latitude, longitude):
     daily_data["Weather Icon"] = standarize_weather_code(daily_weather_code)
     daily_data["Max. Temperature"] = daily_temperature_2m_max
     daily_data["Min. Temperature"] = daily_temperature_2m_min
-    daily_data["Est. Energy"] = daily_estimated_energy
+    daily_data["Est. Energy [kWh]"] = daily_estimated_energy / 3600 # we have seconds but need hours
 
     daily_dataframe = pd.DataFrame(data = daily_data)
-    columns_to_round = ["Max. Temperature", "Min. Temperature", "Est. Energy"]
+    columns_to_round = ["Max. Temperature", "Min. Temperature", "Est. Energy [kWh]"]
     for col in columns_to_round:
         daily_dataframe[col] = daily_dataframe[col].round(2)
         daily_dataframe[col] = daily_dataframe[col].map('{:.2f}'.format)

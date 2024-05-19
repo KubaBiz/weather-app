@@ -1,26 +1,19 @@
 <!-- weather.html -->
-<!-- 
-0: <i class="fa-solid fa-sun"></i>     
-1: <i class="fa-solid fa-cloud-sun"></i>
-2: <i class="fa-solid fa-cloud"></i>
-3: <i class="fa-solid fa-smog"></i>
-4: <i class="fa-solid fa-cloud-rain"></i>
-5: <i class="fa-solid fa-icicles"></i>
-6: <i class="fa-solid fa-cloud-showers-heavy"></i>
-7: <i class="fa-solid fa-cloud-showers-water"></i>
-8: <i class="fa-solid fa-snowflake"></i>
-9: <i class="fa-solid fa-cloud-meatball"></i>
-10: <i class="fa-solid fa-bolt-lightning"></i>
-11: '<i class="fa-solid fa-cloud-bolt"></i>',
--->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Success</title>
+    <title>Weather Forecast</title>
     <script src="https://kit.fontawesome.com/a97dcc86ca.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <h1>Weather Forecast for the Next 7 Days</h1>
+    <button onclick="goBack()">Go Back</button>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
     <table border="1">
         <thead>
             <tr>

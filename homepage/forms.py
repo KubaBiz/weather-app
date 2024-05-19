@@ -1,5 +1,6 @@
 from django import forms
 
+
 class LocationForm(forms.Form):
     latitude = forms.DecimalField(
         max_digits=10, 

@@ -8,9 +8,6 @@ import json
 from .forms import LocationForm
 from .weather_request import request_data
 
-# Create your views here.
-
-def index(request):    return render(request, 'homepage/index.html', {})
 
 def start_view(request):
     if request.method == 'POST':
@@ -29,8 +26,9 @@ def start_view(request):
 def weather_view(request):
     latitude = float(request.session.get('latitude'))
     longitude = float(request.session.get('longitude'))
-    weather_data = request_data(latitude, longitude)
-
+    weather_data = request_data(latitude, longitude)   
+    if isinstance(weather_data, Exception):
+        return HttpResponse(weather_data)
     weather_icons = {
         0: '<i class="fa-solid fa-sun" style="font-size:32px"></i>',
         1: '<i class="fa-solid fa-cloud-sun" style="font-size:32px"></i>',
